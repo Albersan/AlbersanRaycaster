@@ -2,12 +2,38 @@
 #include <vector>
 #include <stdio.h>
 
+//
+const size_t win_w = 512; // image width
+const size_t win_h = 512; // image height
 // Rendering window
 SDL_Window* window = NULL;
 // Surface inside de window
 SDL_Surface* screenSurface = NULL;
 // Renderer component
 SDL_Renderer* renderer = NULL;
+
+uint32_t player_x = 8*10;
+uint32_t player_y = 8*10;
+float player_a = 1.523;
+
+const char map[] =
+"0000222222220000"\
+"1              0"\
+"1      11111   0"\
+"1     0        0"\
+"0     0  1110000"\
+"0     3        0"\
+"0   10000      0"\
+"0   0   11100  0"\
+"0   0   0      0"\
+"0   0   1  00000"\
+"0       1      0"\
+"2       1      0"\
+"0       0      0"\
+"0 0000000      0"\
+"0              0"\
+"0002222222200000"; // our game map
+
 
 uint32_t pack_color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a = 255) 
 {
@@ -37,13 +63,33 @@ void render(std::vector<uint32_t>& framebuffer)
 			SDL_RenderDrawPoint(renderer, i, j);
 		}
 	}
+
+	float c = 0;
+	for (int a = 0; c < 20; c += .05)
+	{
+		float x = player_x/32 + c * cos(player_a);
+		float y = player_y/32 + c * sin(player_a);
+		if (map[int(x) + int(y) * 16] != ' ')
+		{
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+			SDL_RenderDrawLine(renderer, player_x, player_y, int(x)*32, int(y)*32);
+			break;
+		}
+	}
+	
+
+
+	//SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
+	//SDL_RenderDrawLine(renderer, player_x, player_y, int(player_x + c * cos(player_a)), int(player_y + c * sin(player_a)));
 	SDL_RenderPresent(renderer);
 }
 
 void drawGradient(std::vector<uint32_t>& framebuffer)
 {
-	for (size_t j = 0; j < 512; j++) { // fill the screen with color gradients
-		for (size_t i = 0; i < 512; i++) {
+	for (size_t j = 0; j < 512; j++) 
+	{ // fill the screen with color gradients
+		for (size_t i = 0; i < 512; i++) 
+		{
 			uint8_t r = 255 * j / float(512); // varies between 0 and 255 as j sweeps the vertical
 			uint8_t g = 255 * i / float(512); // varies between 0 and 255 as i sweeps the horizontal
 			uint8_t b = 0;
@@ -52,12 +98,59 @@ void drawGradient(std::vector<uint32_t>& framebuffer)
 	}
 }
 
+void drawSolidBackgroundColor(std::vector<uint32_t>& framebuffer, uint32_t color)
+{ // fill the screen with color gradients
+	for (size_t j = 0; j < 512; j++) 
+	{ 
+		for (size_t i = 0; i < 512; i++) 
+		{
+			framebuffer[i + j * 512] = color;
+		}
+	}
+}
+
+void drawColorRectangle(std::vector<uint32_t>& framebuffer, int width, int high, int x_position, int y_position, uint32_t color)
+{
+	for (int i = 0; i < width; ++i)
+	{
+		for (int j = 0; j < high; ++j)
+		{
+			framebuffer[x_position + i + (y_position + j) * 512] = color;
+		}
+	}
+}
+
 void update()
 {
+
+
 	std::vector<uint32_t> framebuffer(512*512, 255); // image initialized to white
 	drawGradient(framebuffer);
+
+
+	//drawColorRectangle(framebuffer, 32, 32, 100, 100, 0xA52A2A);
+	const size_t rect_w = 512 / 16;
+	const size_t rect_h = 512 / 16;
+	for (size_t j = 0; j < 16; j++) { // draw the map
+		for (size_t i = 0; i < 16; i++) {
+			if (map[i + j * 16] == ' ') continue; // skip empty spaces
+			size_t rect_x = i * rect_w;
+			size_t rect_y = j * rect_h;
+			//draw_rectangle(framebuffer, 512, 512, rect_x, rect_y, rect_w, rect_h, pack_color(0, 255, 255));
+			drawColorRectangle(framebuffer, 32, 32, rect_x, rect_y, pack_color(0, 255, 255));
+		}
+	}
+	
+	drawColorRectangle(framebuffer, 5, 5, player_x, player_y, pack_color(255, 255, 255));
+	
+	//SDL_SetRenderDrawColor(renderer, 0, 255, 0,0);
+	//SDL_RenderDrawLine(renderer, player_x, player_y, 160, 45);
+
+
+
 	render(framebuffer);
 	framebuffer.~vector();
+	
 }
 
 void closeSDL()
@@ -85,6 +178,7 @@ void initSDL()
 	}
 }
 
+
 int main(int argc, char* args[])
 {
 	initSDL();
@@ -103,3 +197,10 @@ int main(int argc, char* args[])
 	closeSDL();
 	return 0;
 }
+
+//GAMELOGIC
+//- INPUT
+//- PLAYERMOVEMENT
+//- ACTIONS 
+//- ENEMIES
+//- WIN CONDITION
