@@ -98,8 +98,8 @@ bool Game::init(int wHeigh, int wWidth)
 
 	framebuffer.resize(512*512);// image initialized to black
 	player_a = 1.23;
-	player_x = 50;
-	player_y = 50;
+	player_x = 70;
+	player_y = 70;
 	bRunning = true;
 	return true;
 }
@@ -121,6 +121,9 @@ void Game::clean()
 
 void Game::render()
 {
+	while (lastSDLTime - SDL_GetTicks() < 1000/60) { // 60 fps
+		SDL_Delay(1);
+	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);
 
@@ -135,21 +138,27 @@ void Game::render()
 		}
 	}
 
-	float c = 0;
-	for (int a = 0; c < 20; c += .05)
+	for (int i = 0; i < windowWidth; i++)
 	{
-		float x = player_x / 32 + c * cos(player_a);
-		float y = player_y / 32 + c * sin(player_a);
-		if (map[int(x) + int(y) * 16] != ' ')
+		float angle = player_a - player_fov / 2 + player_fov * i / float(windowWidth);
+		float c = 0;
+		for (int a = 0; c < 20; c += .05)
 		{
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-			SDL_RenderDrawLine(renderer, player_x, player_y, int(x) * 32, int(y) * 32);
-			break;
+			float x = player_x / 32 + c * cos(angle);
+			float y = player_y / 32 + c * sin(angle);
+			if (map[int(x) + int(y) * 16] != ' ')
+			{
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+				SDL_RenderDrawLine(renderer, player_x, player_y, int(x* 32), int(y* 32));
+				break;
+			}
 		}
 	}
+
 	//SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
 	//SDL_RenderDrawLine(renderer, player_x, player_y, int(player_x + c * cos(player_a)), int(player_y + c * sin(player_a)));
 	SDL_RenderPresent(renderer);
+	lastSDLTime = SDL_GetTicks();
 }
 
 void Game::update()

@@ -28,6 +28,10 @@ private:
 	uint32_t player_x;
 	uint32_t player_y;
 	float player_a;
+	float player_fov = M_PI / 3.;
+
+	int lastSDLTime = 0;
+
 
 	std::vector<uint32_t> framebuffer;
 
