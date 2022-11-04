@@ -31,23 +31,32 @@ void unpack_color(const uint32_t& color, uint8_t& r, uint8_t& g, uint8_t& b, uin
 	a = (color >> 24) & 255;
 }
 
-void drawGradient(std::vector<uint32_t>& framebuffer)
-{
+void drawSolidBackgroundColor(std::vector<uint32_t>& framebuffer, uint32_t color)
+{ // fill the screen with color gradients
 	for (size_t j = 0; j < 512; j++)
-	{ // fill the screen with color gradients
+	{
 		for (size_t i = 0; i < 512; i++)
 		{
-			uint8_t r = 255 * j / float(512); // varies between 0 and 255 as j sweeps the vertical
-			uint8_t g = 255 * i / float(512); // varies between 0 and 255 as i sweeps the horizontal
-			uint8_t b = 0;
-			framebuffer[i + j * 512] = pack_color(r, g, b);
+			framebuffer[i + j * 512] = color;
 		}
 	}
 }
 
-void drawSolidBackgroundColor(std::vector<uint32_t>& framebuffer, uint32_t color)
-{ // fill the screen with color gradients
-	for (size_t j = 0; j < 512; j++)
+void drawFloorColor(std::vector<uint32_t>& framebuffer, uint32_t color) 
+{
+	for (size_t j = 256; j < 512; j++)
+	{
+		for (size_t i = 0; i < 512; i++)
+		{
+			framebuffer[i + j * 512] = color;
+		}
+	}
+
+}
+
+void drawCeilingColor(std::vector<uint32_t>& framebuffer, uint32_t color)
+{
+	for (size_t j = 0; j < 256; j++)
 	{
 		for (size_t i = 0; i < 512; i++)
 		{
@@ -148,8 +157,13 @@ void Game::render()
 			float y = player_y / 32 + c * sin(angle);
 			if (map[int(x) + int(y) * 16] != ' ')
 			{
+				//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+				//SDL_RenderDrawLine(renderer, player_x, player_y, int(x* 32), int(y* 32));
+
+				size_t column_height = windowWidth / c;
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-				SDL_RenderDrawLine(renderer, player_x, player_y, int(x* 32), int(y* 32));
+				SDL_RenderDrawLine(renderer, i, (windowWidth/2)-column_height,i, (windowWidth/2)+column_height);
+				//SDL_RenderDrawLine(renderer, windowWidth / 2 + i, windowHeigh / 2 - column_height / 2, 1, column_height);
 				break;
 			}
 		}
@@ -163,9 +177,8 @@ void Game::render()
 
 void Game::update()
 {
-	//std::vector<uint32_t> framebuffer(512*512, 255); // image initialized to white
-	drawGradient(framebuffer);
-
+	drawFloorColor(framebuffer,pack_color(50,50,50));
+	drawCeilingColor(framebuffer, pack_color(128, 128, 128));
 	const size_t rect_w = 512 / 16;
 	const size_t rect_h = 512 / 16;
 	for (size_t j = 0; j < 16; j++) { // draw the map
@@ -173,9 +186,8 @@ void Game::update()
 			if (map[i + j * 16] == ' ') continue; // skip empty spaces
 			size_t rect_x = i * rect_w;
 			size_t rect_y = j * rect_h;
-			drawColorRectangle(framebuffer, 32, 32, rect_x, rect_y, pack_color(0, 255, 255));
+			//drawColorRectangle(framebuffer, 32, 32, rect_x, rect_y, pack_color(0, 255, 255));
 		}
 	}
-
-	drawColorRectangle(framebuffer, 5, 5, player_x, player_y, pack_color(255, 255, 255));
+	//drawColorRectangle(framebuffer, 5, 5, player_x, player_y, pack_color(255, 255, 255));
 }
