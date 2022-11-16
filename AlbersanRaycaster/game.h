@@ -15,24 +15,26 @@ public:
 	void handleEvents();
 	void clean();
 
-	bool running() { return bRunning; }
+	void drawRectangle(int width, int high, int x_position, int y_position, uint32_t color, SDL_Texture* tex, SDL_Rect* mask);
+
+	bool running() { return bIsRunning; }
+
+	bool bIsMapVisible = false;
 
 private:
 
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	bool bRunning;
-	int windowHeigh;
-	int windowWidth;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	bool bIsRunning = false;
+	int windowHeigh = 0;
+	int windowWidth = 0;
 
-	uint32_t player_x;
-	uint32_t player_y;
-	float player_a;
+	uint32_t player_x = 0;
+	uint32_t player_y = 0;
+	float player_a = 0.0;
 	float player_fov = M_PI / 3.;
 
 	int lastSDLTime = 0;
 
-
-	std::vector<uint32_t> framebuffer;
-
+	SDL_Texture* brick_01;
 };
