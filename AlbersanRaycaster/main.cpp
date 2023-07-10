@@ -1,26 +1,17 @@
-#include "game.h"
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#include "Game.h"
 
 int main(int argc, char* args[])
 {
+	// Init the game with size of window	
 	Game game;
-
-	// Init the game with size of window
-	if (!game.init(512, 512))
+	if (!game.Init(512, 512, 60.0f))
 	{
 		exit(EXIT_FAILURE);
 	}
 
-	// Frame counter
-	int frames = 0;
+	// Start the gameloop
+	game.gameLoop();
 	
-	while (game.running())
-	{
-		game.handleEvents();
-		game.update();
-		game.render();
-		printf("%i\n",frames);
-		frames++;
-	}
-	game.clean();
 	return 0;
 }

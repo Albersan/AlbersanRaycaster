@@ -1,6 +1,14 @@
+#pragma once
 #include <SDL.h>
+#include <string>
 #include <stdio.h>
 #include <vector>
+
+class Render;
+class World;
+class GameMode;
+class InputManager;
+class SoundManager;
 
 class Game
 {
@@ -8,33 +16,33 @@ public:
 	Game();
 	~Game();
 
-	bool init(int wHeigh, int wWidth);
-
-	void render();
-	void update();
-	void handleEvents();
+	bool Init(int newWindowWidth, int newWindowHeigh, const float newFramesPerSecond);
+	void gameLoop();
+	void Tick();
 	void clean();
+	void Restart();
 
-	void drawRectangle(int width, int high, int x_position, int y_position, uint32_t color, SDL_Texture* tex, SDL_Rect* mask);
-
-	bool running() { return bIsRunning; }
-
-	bool bIsMapVisible = false;
-
+	SDL_Window* GetWindow() { return window; }
+	SDL_Renderer* GetRenderer() { return renderer; }
+	World* GetWorld() { return world; }
+	GameMode* GetGameMode() { return gameMode; }
+	Render* GetRender() { return render; }
+	InputManager* GetInputManager() { return inputManager; }
+	SoundManager* GetSoundManager() { return soundManager; }
+	int GetWindowHeigh() { return windowHeigh; }
+	int GetWindowWidth() { return windowWidth; }
+	int GetMapProportion() { return 32; }
 private:
-
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-	bool bIsRunning = false;
+	World* world = nullptr;
+	GameMode* gameMode = nullptr;
+	Render* render = nullptr;
+	InputManager* inputManager = nullptr;
+	SoundManager* soundManager = nullptr;
 	int windowHeigh = 0;
 	int windowWidth = 0;
+	float framesPerSecond = 0;
 
-	uint32_t player_x = 0;
-	uint32_t player_y = 0;
-	float player_a = 0.0;
-	float player_fov = M_PI / 3.;
-
-	int lastSDLTime = 0;
-
-	SDL_Texture* brick_01;
+	void UpdateWindowName(std::string name);
 };

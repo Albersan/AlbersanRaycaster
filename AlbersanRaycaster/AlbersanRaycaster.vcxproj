@@ -19,12 +19,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h" />
-    <ClInclude Include="utils.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Door.h" />
+    <ClInclude Include="Render.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -87,7 +106,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <ExternalIncludePath>D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2-2.24.1\include;D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2_image-2.6.2\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2-2.24.1\lib\x64;D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2_image-2.6.2\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2-2.24.1\lib\x64;D:\REPOSITORIO\AlbersanRaycaster\sdl\SDL2_image-2.6.2\lib\x64;$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -130,7 +150,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
