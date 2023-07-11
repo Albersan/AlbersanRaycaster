@@ -20,15 +20,15 @@ World::~World()
 
 void World::Init(Game* gameReference)
 {
-    //LoadMapFromMemory("maps/Level_01.map");
-    LoadLevel("maps/Level_01.map");
     game = gameReference;
+    LoadLevel("maps/Level_01.map");
+}
 
+void World::LoadLevel(const char* MapName)
+{
+    LoadMapFromMemory(MapName);
     player = dynamic_cast<Player*>(Spawn(ActorClassType::PLAYER));
-    //corregir doble tick del player
-   
     Door* door = dynamic_cast<Door*>(Spawn(ActorClassType::DOOR));
-    door->Init(game);    
     door->SetMapX(3);
     door->SetMapY(7);
     door->SetInteractionDistance(32);
@@ -38,17 +38,8 @@ void World::Init(Game* gameReference)
     robot->setPosition(288, 320);
 }
 
-void World::LoadLevel(const char* MapName)
-{
-    LoadMapFromMemory("maps/Level_01.map");
-}
-
 void World::Tick()
 {
-    if (player->getCanTick())
-    {
-        player->Tick();
-    }
     for (Actor* actor : GameActors) 
     {
         if (actor->getCanTick()) 

@@ -25,12 +25,11 @@ void Actor::Tick()
 void Actor::setSprite(SDL_Texture* newSprite)
 {
 	sprite = newSprite;
-	//bHasSprite = true;
 }
 void Actor::createAndSetSprite(const char* path) 
 {
 	SDL_Texture* newTexture = IMG_LoadTexture(game->GetRenderer(), path);
-	setSprite(newTexture);
+	sprite = newTexture;
 }
 
 float Actor::DistanceBetweenActors(Actor* actor)

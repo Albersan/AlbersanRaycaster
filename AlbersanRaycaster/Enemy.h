@@ -15,6 +15,4 @@ private:
     float damage = 20;
     int shotDelay = 25;
     int DelayCounter = 0;
-
 };
-

@@ -21,10 +21,9 @@ void Key::Tick()
 	if (DistanceBetweenActors(game->GetWorld()->GetPlayer()) <= interactionDistance) 
 	{
 		Player* player = dynamic_cast<Player*>(game->GetWorld()->GetPlayer());
-		if (!player) {
-			printf("Cast failure\n");
+		if (player) {
+			player->AddItem(itemID);
+			game->GetWorld()->DeleteActor(this);
 		}
-		player->AddItem(itemID);
-		game->GetWorld()->DeleteActor(this);
 	}
 }

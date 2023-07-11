@@ -19,14 +19,11 @@ void Enemy::Tick()
 	if(life<=0)
 	{
 		bCanTick = false;
-		Key* key = new Key();
-		key->Init(game);
+		
+		Key* key = dynamic_cast<Key*>(game->GetWorld()->Spawn(World::ActorClassType::KEY));
 		key->setPositionAndAngle(positionX, positionY, 0, 0);
 		key->createAndSetSprite("textures/key_01.png");
-		key->SetInteractionDistance(50);
 		key->SetItemID(5);
-		game->GetWorld()->SpawnActor(key);
-
 		game->GetWorld()->DeleteActor(this);
 	}
 

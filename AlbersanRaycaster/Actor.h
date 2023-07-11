@@ -45,6 +45,11 @@ public:
 	void SetLife(int newLife) { life = newLife; }
 	bool GetCanBeDamaged() { return bCanBeDamaged; }
 	void SetCanBeDamaged(bool newCanBedamaged) { bCanBeDamaged=newCanBedamaged; }
+	void ApplyDamage(int lifeLoss) { if (bCanBeDamaged) life -= lifeLoss; };
+
+	float GetInteractionDistance() { return interactionDistance; }
+	void SetInteractionDistance(float newInteractionDistance) { interactionDistance = newInteractionDistance; }
+
 protected:
 	float positionX;
 	float positionY;
@@ -53,10 +58,7 @@ protected:
 	bool bCanTick;
 	SDL_Texture* sprite;
 	Game* game;
-
-protected:
 	int life = 100;
 	bool bCanBeDamaged = false;
-public:
-	void ApplyDamage(int lifeLoss) { if(bCanBeDamaged) life -= lifeLoss; };
+	float interactionDistance = 32;
 };
