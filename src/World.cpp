@@ -21,12 +21,13 @@ World::~World()
 void World::Init(Game* gameReference)
 {
     game = gameReference;
-    LoadLevel("maps/Level_01.map");
+    LoadLevel("D:/REPOSITORIO/AlbersanRaycaster/src/maps/Level_01.map");
 }
 
 void World::LoadLevel(const char* MapName)
 {
     LoadMapFromMemory(MapName);
+    // TO DO : initializate the objetcs in the loadmap
     player = dynamic_cast<Player*>(Spawn(ActorClassType::PLAYER));
     Door* door = dynamic_cast<Door*>(Spawn(ActorClassType::DOOR));
     door->SetMapX(3);
@@ -60,7 +61,7 @@ void World::SpawnActor(Actor* actor)
 }
 
 Actor* World::Spawn(ActorClassType actorClassType)
-{
+{ // TODO: Make this dynamic
     Actor* actor;
     switch (actorClassType)
     {
@@ -88,6 +89,7 @@ Actor* World::Spawn(ActorClassType actorClassType)
 
 void World::DeleteActor(Actor* actorToDelete)
 {
+    // TO DO delete in memory
     GameActors.erase(std::remove_if(GameActors.begin(), GameActors.end(),
         [actorToDelete](Actor* actor) {
             return actor == actorToDelete;
@@ -100,14 +102,37 @@ void World::ModifyGameMapValue(int x, int y, unsigned char newValue)
     GameMap[x+y*16] = newValue;
 }
 
+
+
 void World::LoadMapFromMemory(const char* MapName)
 {
-	std::ifstream infile(MapName);
+    //TO DO:
+    // (4,1,3)  
+    // id;Xpos;Ypos 
+    // ids : Enemy,Player,Door,Key,End
+    // Config level file: header 
+    // textures path to number
+    // ids to objects ¿?
+    // gamemode select
+    // end definition
+    std::ifstream infile(MapName);
+    if (!infile.is_open()) {
+        std::cerr << "Error al abrir el archivo: " << MapName << std::endl;
+        // Manejo del error...
+    }
+    else {
+        // El archivo se abrió correctamente, puedes proceder a leerlo
+    }
+
+	//std::ifstream infile(MapName);
 	int x, y;
     infile.seekg(0, std::ios::end);
-    int length = infile.tellg();
+    int length = infile.tellg(); // could be -1
     infile.seekg(0, std::ios::beg);
-
+    if (length < 0) 
+    {
+        exit(EXIT_FAILURE);
+    }
     int parameters[2];
 
     // Create a char array to store the contents of the file
