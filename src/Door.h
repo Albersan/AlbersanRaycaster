@@ -12,8 +12,8 @@ public:
     int GetMapX() { return mapX; }
     int GetMapY() { return mapY; }
 
-    void SetMapX(int newMapX) { mapX = newMapX; positionX = mapX * 32; }
-    void SetMapY(int newMapY) { mapY = newMapY; positionY = mapY * 32; }
+    void SetMapX(int newMapX) { mapX = newMapX; positionX = mapX * 32.f; }
+    void SetMapY(int newMapY) { mapY = newMapY; positionY = mapY * 32.f; }
 
     void openTheDoor(bool bIsPressed);
     void SetNeededItem(int newItem) { neededItem = newItem; }

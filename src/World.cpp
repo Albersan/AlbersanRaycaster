@@ -112,7 +112,7 @@ void World::LoadMapFromMemory(const char* MapName)
     // ids : Enemy,Player,Door,Key,End
     // Config level file: header 
     // textures path to number
-    // ids to objects ¿?
+    // ids to objects ï¿½?
     // gamemode select
     // end definition
     std::ifstream infile(MapName);
@@ -121,13 +121,13 @@ void World::LoadMapFromMemory(const char* MapName)
         // Manejo del error...
     }
     else {
-        // El archivo se abrió correctamente, puedes proceder a leerlo
+        // El archivo se abriï¿½ correctamente, puedes proceder a leerlo
     }
 
 	//std::ifstream infile(MapName);
-	int x, y;
+	//int x, y;
     infile.seekg(0, std::ios::end);
-    int length = infile.tellg(); // could be -1
+    int length =  static_cast<int>(infile.tellg()); // could be -1
     infile.seekg(0, std::ios::beg);
     if (length < 0) 
     {
